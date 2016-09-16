@@ -105,23 +105,24 @@ So you can now use these value to build your razor output like so:
 Until now we've configured this text area to have the color red. What if you want to let the editor decide different colors for different instances of this editor? You can add user-configurable settings to the editor by adding prevalues or property editors to the config. There's a magical config key named "settings" that lets us enable use-configurable settings. Remove the color key from the config object, and add settings with the color property editor instead:
 
     {
-      "value": "What ever value entered into the textarea",
-      "editor": {
-        "name": "Code",
-        "alias": "code",
-        "view": "/app_plugins/yourpackage/editor.html",
-        "icon": "icon-code",
-        "config": {
-          "text-align": "right",
-          "settings": [
-              {
-                "color": { 
-                  "view": "~/umbraco/views/propertyeditors/colorpicker/colorpicker.html",
-                  ...
+      "gridEditors": [
+        {
+          "name": "Code",
+          "alias": "code",
+          "view": "/app_plugins/yourpackage/editor.html",
+          "icon": "icon-code",
+          "config": {
+            "text-align": "right",
+            "settings": [
+                {
+                  "color": { 
+                    "view": "~/umbraco/views/propertyeditors/colorpicker/colorpicker.html",
+                    ...
+                  }
                 }
               }
-            }
-          ]
+            ]
+          }
         }
-      }
+      ]
     }
