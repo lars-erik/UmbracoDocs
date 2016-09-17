@@ -145,6 +145,8 @@ Until now we've configured this text area to have the color red and right aligne
       ]
     }
 
+When using the grid editor now, there's a small cog in the upper right corner. Clicking it shows the right-hand dialog with the two settings editors.
+
 We can now update our views to use the configuration from the settings instead:
 
     <textarea rows="1" ng-model="control.value" ng-style="control.config"></textarea>
