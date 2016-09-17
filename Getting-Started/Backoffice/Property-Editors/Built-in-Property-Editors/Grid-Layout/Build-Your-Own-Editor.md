@@ -102,7 +102,7 @@ So you can now use these value to build your razor output like so:
 
 ### Advanced settings
 
-Until now we've configured this text area to have the color red and right aligned text. What if you want to let the editor select different colors and alignments for different instances of this editor? You can add user-configurable settings to the editor by adding prevalues or property editors to the config. There's a magical config key named "settings" that lets us enable use-configurable settings. Remove the color key from the config object, and add settings with the color property editor instead. Note that you cannot combine this technique with hardcoded configuration. The settings will override the configuration.
+Until now we've configured this text area to have the color red and right aligned text. What if you want to let the editor select different colors and alignments for different instances of this editor? You can add user-configurable settings to the editor by adding prevalues or property editors to the config. There's a magical config key named "settings" that lets us enable user-configurable settings. Remove the color and text-align keys from the config object, and add settings with the each as property editor definitions instead. Note that you cannot combine this technique with hardcoded configuration. The settings will override the configuration.
 
     {
       "gridEditors": [
@@ -152,3 +152,5 @@ We can now update our views to use the configuration from the settings instead:
 and
 
     <div style="color:@Model.config.color;text-align:@Model.config["text-align"]">@Model.value</div>
+
+The settings configuration is also available in the controller and can be modified there. As an excercise, try modifying the sample to provide three random colors instead. 
