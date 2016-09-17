@@ -102,7 +102,7 @@ So you can now use these value to build your razor output like so:
 
 ### Advanced settings
 
-Until now we've configured this text area to have the color red. What if you want to let the editor decide different colors for different instances of this editor? You can add user-configurable settings to the editor by adding prevalues or property editors to the config. There's a magical config key named "settings" that lets us enable use-configurable settings. Remove the color key from the config object, and add settings with the color property editor instead:
+Until now we've configured this text area to have the color red and right aligned text. What if you want to let the editor decide different colors and alignments for different instances of this editor? You can add user-configurable settings to the editor by adding prevalues or property editors to the config. There's a magical config key named "settings" that lets us enable use-configurable settings. Remove the color key from the config object, and add settings with the color property editor instead. Note that you cannot combine this technique with hardcoded configuration. The settings will override the configuration.
 
     {
       "gridEditors": [
@@ -111,18 +111,44 @@ Until now we've configured this text area to have the color red. What if you wan
           "alias": "code",
           "view": "/app_plugins/yourpackage/editor.html",
           "icon": "icon-code",
-          "config": {
-            "text-align": "right",
-            "settings": [
-                {
-                  "color": { 
-                    "view": "~/umbraco/views/propertyeditors/colorpicker/colorpicker.html",
-                    ...
+            "config": {
+              "settings": {
+                "text-align": {
+                  "label": "Text align",
+                  "key": "text-align",
+                  "description": "Alignment of the text",
+                  "view": "/umbraco/views/propertyeditors/dropdown/dropdown.html",
+                  "config": {
+                    "items": {
+                      "left": "Left",
+                      "right": "Right"
+                    }
+                  }
+                },
+                "color": {
+                  "label": "Color",
+                  "key": "color",
+                  "description": "The color for the text",
+                  "view": "/umbraco/views/propertyeditors/colorpicker/colorpicker.html",
+                  "config": {
+                    "items": [
+                      "#FF0000",
+                      "#00FF00",
+                      "#0000FF"
+                    ]
                   }
                 }
               }
-            ]
+            }
           }
         }
       ]
     }
+
+We can now update our views to use the configuration from the settings instead:
+
+    <textarea rows="1" ng-model="control.value" ng-style="control.config"></textarea>
+
+and
+
+    <div style="color:@Model.config.color;text-align:@Model.config["text-align"]">@Model.value</div>
