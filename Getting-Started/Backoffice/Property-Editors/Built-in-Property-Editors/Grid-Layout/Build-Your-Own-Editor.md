@@ -1,7 +1,7 @@
 #Build your own editor
 Create a file in `/app_plugins/yourpackage/editor.html` and add the following to the editor.html file: 
 
-    <textarea rows="1" ng-model="control.value" ng-style="control.config"></textarea>
+    <textarea rows="1" ng-model="control.value" ng-style="control.editor.config"></textarea>
 
 Save the file and add an editor to the `/app_plugins/yourpackage/package.manifest` file:
 
@@ -102,3 +102,60 @@ When rendering the .cshtml file will receive a dynamic model with the raw data o
 So you can now use these value to build your razor output like so:
 
     <div style="color: @Model.config.color">@Model.value</div>
+
+### Advanced settings
+
+Until now we've configured this text area to have the color red and right aligned text. What if you want to let the editor select different colors and alignments for different instances of this editor? You can add user-configurable settings to the editor by adding prevalues or property editors to the config. There's a magical config key named "settings" that lets us enable user-configurable settings. Remove the color and text-align keys from the config object, and add settings with the each as property editor definitions instead. Note that you cannot combine this technique with hardcoded configuration. The settings will override the configuration.
+
+    {
+      "gridEditors": [
+        {
+          "name": "Code",
+          "alias": "code",
+          "view": "/app_plugins/yourpackage/editor.html",
+          "icon": "icon-code",
+            "config": {
+              "settings": {
+                "text-align": {
+                  "label": "Text align",
+                  "key": "text-align",
+                  "description": "Alignment of the text",
+                  "view": "/umbraco/views/propertyeditors/dropdown/dropdown.html",
+                  "config": {
+                    "items": {
+                      "left": "Left",
+                      "right": "Right"
+                    }
+                  }
+                },
+                "color": {
+                  "label": "Color",
+                  "key": "color",
+                  "description": "The color for the text",
+                  "view": "/umbraco/views/propertyeditors/colorpicker/colorpicker.html",
+                  "config": {
+                    "items": [
+                      "#FF0000",
+                      "#00FF00",
+                      "#0000FF"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+
+When using the grid editor now, there's a small cog in the upper right corner. Clicking it shows the right-hand dialog with the two settings editors.
+
+We can now update our views to use the configuration from the settings instead:
+
+    <textarea rows="1" ng-model="control.value" ng-style="control.config"></textarea>
+
+and
+
+    <div style="color:@Model.config.color;text-align:@Model.config["text-align"]">@Model.value</div>
+
+The settings configuration is also available in the controller and can be modified there. As an excercise, try modifying the sample to provide three random colors instead. 
