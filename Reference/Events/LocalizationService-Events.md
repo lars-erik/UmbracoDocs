@@ -1,4 +1,8 @@
-#LocalizationService Events#
+---
+versionFrom: 7.0.0
+---
+
+# LocalizationService Events#
 
 The LocalizationService class implements ILocalizationService. It provides easy access to operations involving Language and DictionaryItem.
 
@@ -105,4 +109,3 @@ The LocalizationService class implements ILocalizationService. It provides easy 
         </td>
     </tr>
 </table>
-
